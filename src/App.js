@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import React from "react";
+import "./App.css";
+import axios from "axios";
+class App extends React.Component {
+  state = {
+    advise: "",
+  };
+  componentDidMount() {
+    this.fetchJoke();
+  }
+  fetchJoke = () => {
+    axios
+      .get("https://icanhazdadjoke.com/", {
+        headers: { Accept: "application/json" },
+      })
+      .then((response) => {
+        this.setState({ joke: response.data.joke });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  render() {
+    const { joke } = this.state;
+    return (
+      <div className="app">
+        <div className="card">
+          <h1>It's enough dad..</h1>
+          <p className="heading">{joke}</p>
+          <button className='bn5' onClick={this.fetchJoke}>Get Joke</button>
+        </div>
+      </div>
+    );
+  }
 }
 
 export default App;
